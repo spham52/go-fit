@@ -22,7 +22,7 @@ public class Session {
     private String time;
 
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<ActivityLog> activities;
+    List<ActivityLog> activityLog;
 
     public Session() {}
 
@@ -53,6 +53,14 @@ public class Session {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public List<ActivityLog> getActivityLog() {
+        return activityLog;
+    }
+
+    public void setActivityLog(List<ActivityLog> activityLog) {
+        this.activityLog = activityLog;
     }
 
     @Override
