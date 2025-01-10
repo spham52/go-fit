@@ -1,11 +1,15 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "workout_log")
 public class WorkoutLog {
 
+    @NotNull
     @Id
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "activity_log_id")
@@ -17,8 +21,9 @@ public class WorkoutLog {
     @Column(name = "sets")
     private int sets;
 
+    @NotNull
     @Column(name = "log_time")
-    private String time;
+    private LocalDateTime time;
 
     @Column(name = "notes")
     private String notes;
@@ -26,7 +31,7 @@ public class WorkoutLog {
     public WorkoutLog() {
     }
 
-    public WorkoutLog(ActivityLog activityLog, String time) {
+    public WorkoutLog(ActivityLog activityLog, LocalDateTime time) {
         this.activityLog = activityLog;
         this.time = time;
     }
@@ -55,11 +60,11 @@ public class WorkoutLog {
         this.sets = sets;
     }
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

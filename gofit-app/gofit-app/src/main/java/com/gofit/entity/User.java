@@ -1,6 +1,7 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -8,17 +9,21 @@ import java.util.List;
 @Table(name="user")
 public class User {
 
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private int id;
 
+    @NotNull
     @Column(name="display_username")
-    private String display_name;
+    private String displayName;
 
+    @NotNull
     @Column(name="username")
     private String username;
 
+    @NotNull
     @Column(name="password")
     private String password;
 
@@ -30,8 +35,8 @@ public class User {
 
     public User() {};
 
-    public User(String display_name, String username, String password) {
-        this.display_name = display_name;
+    public User(String displayName, String username, String password) {
+        this.displayName = displayName;
         this.username = username;
         this.password = password;
     }
@@ -44,12 +49,12 @@ public class User {
         this.id = id;
     }
 
-    public String getDisplay_name() {
-        return display_name;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
+    public void setDisplayName(String display_name) {
+        this.displayName = display_name;
     }
 
     public String getUsername() {
@@ -88,7 +93,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", display_name='" + display_name + '\'' +
+                ", display_name='" + displayName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';

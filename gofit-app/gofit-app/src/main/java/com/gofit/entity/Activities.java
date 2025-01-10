@@ -1,11 +1,13 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="activities")
 public class Activities {
 
+    @NotNull
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="activity_id")
@@ -16,15 +18,19 @@ public class Activities {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     @Column(name="activity_name")
     private String activityName;
 
+    @NotNull
     @Column(name = "activity_type")
     private String activityType;
 
+    @NotNull
     @Column(name = "category")
     private String category;
 
+    @NotNull
     @Column(name = "is_custom")
     private boolean isCustom;
 
@@ -32,6 +38,13 @@ public class Activities {
 
     public Activities(User user, String activityName, String activityType, String category, boolean isCustom) {
         this.user = user;
+        this.activityName = activityName;
+        this.activityType = activityType;
+        this.category = category;
+        this.isCustom = isCustom;
+    }
+
+    public Activities(String activityName, String activityType, String category, boolean isCustom) {
         this.activityName = activityName;
         this.activityType = activityType;
         this.category = category;

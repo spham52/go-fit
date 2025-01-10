@@ -1,32 +1,37 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name="session")
 public class Session {
 
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="session_id")
     private int sessionID;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                                                   CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     @Column(name="log_time")
-    private String time;
+    private LocalDateTime time;
 
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<ActivityLog> activityLog;
 
     public Session() {}
 
-    public Session(User user, String time) {
+    public Session(User user, LocalDateTime time) {
         this.user = user;
         this.time = time;
     }
@@ -47,11 +52,11 @@ public class Session {
         this.user = user;
     }
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
