@@ -19,31 +19,31 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
-    public User findUserByID(int id) {
+    public User findByID(int id) {
         User user = em.find(User.class, id);
         return user;
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> findAll() {
         TypedQuery<User> list = em.createQuery("select u FROM User u", User.class);
         return list.getResultList();
     }
 
     @Override
-    public User saveUser(User user) {
+    public User save(User user) {
         em.persist(user);
         return user;
     }
 
     @Override
-    public User updateUser(User user) {
+    public User update(User user) {
         User newUser = em.merge(user);
         return newUser;
     }
 
     @Override
-    public void deleteUser(int id) {
-        em.remove(findUserByID(id));
+    public void delete(int id) {
+        em.remove(findByID(id));
     }
 }
