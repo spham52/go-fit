@@ -3,13 +3,13 @@ package com.gofit.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "activitylog")
+@Table(name = "activity_log")
 public class ActivityLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "activity_log_id")
-    private int activityLogId;
+    private int activityLogID;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                                                   CascadeType.REFRESH, CascadeType.DETACH})
@@ -28,11 +28,11 @@ public class ActivityLog {
     }
 
     public int getActivityLogId() {
-        return activityLogId;
+        return activityLogID;
     }
 
     public void setActivityLogId(int activityLogId) {
-        this.activityLogId = activityLogId;
+        this.activityLogID = activityLogId;
     }
 
     public Session getSession() {
@@ -54,7 +54,7 @@ public class ActivityLog {
     @Override
     public String toString() {
         return "ActivityLog{" +
-                "activityLogId=" + activityLogId +
+                "activityLogId=" + activityLogID +
                 ", session=" + session +
                 ", activities=" + activities +
                 '}';
