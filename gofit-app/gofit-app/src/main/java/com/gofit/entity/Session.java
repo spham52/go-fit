@@ -26,6 +26,8 @@ public class Session {
     @Column(name="log_time")
     private LocalDateTime time;
 
+    // each session holds multiple activityLogs
+    // activityLogs are exercises/workouts recorded by the user in a single session
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<ActivityLog> activityLog;
 

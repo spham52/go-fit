@@ -27,9 +27,13 @@ public class User {
     @Column(name="password")
     private String password;
 
+    // list of sessions created by a user
+    // each session represents multiple workouts or exercises done in a session
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Session> sessions;
 
+    // list of activites created by a user
+    // these are custom activities created by the user
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Activities> activities;
 

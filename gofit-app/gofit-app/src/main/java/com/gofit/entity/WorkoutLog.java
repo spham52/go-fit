@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
+// this class is designed for information about hypertrophy-related exercises performed by the user
+// it is mapped to an activity log
+
 @Entity
 @Table(name = "workout_log")
 public class WorkoutLog {
