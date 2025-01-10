@@ -8,7 +8,7 @@ public class ExerciseLog {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "activityLogID")
+    @JoinColumn(name = "activity_log_id")
     private ActivityLog activityLog;
 
     @Column(name = "log_time")
