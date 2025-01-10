@@ -2,6 +2,7 @@ package com.gofit.service;
 
 import com.gofit.entity.User;
 import com.gofit.userDAO.UserDAO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.save(user);
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User update(User user) {
         User newUser = userDAO.update(user);
         return newUser;
@@ -44,6 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteByID(int id) {
         userDAO.delete(id);
     }
