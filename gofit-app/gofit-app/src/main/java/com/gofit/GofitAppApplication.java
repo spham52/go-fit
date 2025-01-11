@@ -1,6 +1,6 @@
 package com.gofit;
 
-import com.gofit.userDAO.UserDAO;
+import com.gofit.dao.UserDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
