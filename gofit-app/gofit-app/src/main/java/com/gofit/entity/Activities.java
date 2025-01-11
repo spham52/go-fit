@@ -26,13 +26,11 @@ public class Activities {
     @Column(name = "activity_type")
     private String activityType;
 
-    @NotNull
     @Column(name = "category")
     private String category;
 
-    @NotNull
     @Column(name = "is_custom")
-    private boolean isCustom;
+    private boolean isCustom = false;
 
     public Activities() {}
 
