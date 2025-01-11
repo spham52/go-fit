@@ -1,4 +1,4 @@
-package com.gofit.userDAO;
+package com.gofit.dao;
 
 import com.gofit.entity.User;
 import jakarta.persistence.EntityManager;
