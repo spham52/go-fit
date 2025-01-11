@@ -1,5 +1,6 @@
 package com.gofit.controller;
 
+import com.gofit.entity.Activities;
 import com.gofit.entity.User;
 import com.gofit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
+@RequestMapping("/user")
 public class UserController {
     private UserService userService;
 
@@ -16,28 +18,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     List<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     User getUserById(@PathVariable("id") int id) {
         return userService.findByID(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     User addUser(@RequestBody User user) {
         user.setId(0);
         return userService.save(user);
     }
 
-    @PutMapping("/users")
+    @PutMapping()
     User updateUser(@RequestBody User user) {
         return userService.update(user);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     void deleteUser(@PathVariable("id") int id) {
         userService.deleteByID(id);
     }
