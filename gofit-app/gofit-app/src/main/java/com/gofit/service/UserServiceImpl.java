@@ -1,7 +1,7 @@
 package com.gofit.service;
 
 import com.gofit.entity.User;
-import com.gofit.userDAO.UserDAO;
+import com.gofit.dao.UserDAO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
