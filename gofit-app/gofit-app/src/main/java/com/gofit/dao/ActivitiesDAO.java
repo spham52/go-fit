@@ -16,4 +16,6 @@ public interface ActivitiesDAO {
     Activities update(Activities activities);
 
     void delete(int id);
+
+    List<Activities> getAllFromUser(int userID);
 }
