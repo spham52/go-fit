@@ -1,6 +1,7 @@
 package com.gofit.dao;
 
 import com.gofit.entity.Activities;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
