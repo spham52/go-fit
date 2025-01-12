@@ -18,4 +18,6 @@ public interface ActivitiesDAO {
     void delete(int id);
 
     List<Activities> getAllFromUser(int userID);
+
+    void deleteAllActivitiesFromUser(int userID);
 }

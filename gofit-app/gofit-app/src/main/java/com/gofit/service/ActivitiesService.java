@@ -22,4 +22,6 @@ public interface ActivitiesService {
     Activities addToUser(Activities activities, int userID);
 
     List<Activities> getAllFromUser(int userID);
+
+    void deleteAllFromUser(int userID);
 }

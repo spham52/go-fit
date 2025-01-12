@@ -29,7 +29,12 @@ public class ActivitiesServiceImpl implements ActivitiesService {
 
     @Override
     public Activities getActivities(int id) {
-        return activitiesDAO.get(id);
+        try {
+            return activitiesDAO.get(id);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Activity not found");
+            return null;
+        }
     }
 
     @Override
@@ -76,6 +81,12 @@ public class ActivitiesServiceImpl implements ActivitiesService {
     @Override
     public List<Activities> getAllFromUser(int userID) {
         return activitiesDAO.getAllFromUser(userID);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllFromUser(int userID) {
+        activitiesDAO.deleteAllActivitiesFromUser(userID);
     }
 
 }

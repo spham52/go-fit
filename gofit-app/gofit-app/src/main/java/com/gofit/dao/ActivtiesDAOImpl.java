@@ -54,4 +54,12 @@ public class ActivtiesDAOImpl implements ActivitiesDAO {
         query.setParameter("userID", userID);
         return query.getResultList();
     }
+
+    @Override
+    public void deleteAllActivitiesFromUser(int userID) {
+        TypedQuery<Activities> query =  em.createQuery("delete from Activities a where a.user.id = :userID",
+                                                           Activities.class);
+        query.setParameter("userID", userID);
+        query.executeUpdate();
+    }
 }
