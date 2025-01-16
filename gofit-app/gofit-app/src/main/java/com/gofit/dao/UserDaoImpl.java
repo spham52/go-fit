@@ -46,4 +46,11 @@ public class UserDaoImpl implements UserDAO {
     public void delete(int id) {
         em.remove(findByID(id));
     }
+
+    @Override
+    public User findByUsername(String username) {
+        TypedQuery<User> query = em.createQuery("select u from User u where u.username = :username", User.class);
+        query.setParameter("username", username);
+        return query.getSingleResult();
+    }
 }
