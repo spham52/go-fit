@@ -1,4 +1,4 @@
-package com.gofit.controller;
+package com.gofit.restController;
 
 import com.gofit.entity.Activities;
 import com.gofit.service.ActivitiesService;
