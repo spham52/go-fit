@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form th:action="@{/auth/register}" method="POST" th:object="${user}">
+
+    Username:
+    <input th:field="*{username}"/><br>
+
+    Display Name
+    <input th:field="*{displayName}"/><br>
+
+    Password:
+    <input th:field="*{password}"/><br>
+
+    <input type="submit">
+
+</form>
+</body>
+</html>
