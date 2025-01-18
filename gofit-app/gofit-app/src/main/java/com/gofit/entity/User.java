@@ -1,8 +1,11 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -15,15 +18,22 @@ public class User {
     @Column(name="user_id")
     private int id;
 
-    @NotNull
+    @NotBlank
     @Column(name="display_username")
+    @Size(min=6, max=32)
+    @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
     private String displayName;
 
     @NotNull
+    @NotBlank
+    @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
     @Column(name="username")
     private String username;
 
     @NotNull
+    @NotBlank
+    @Size(min = 8, max=20, message="Please enter a password greater" +
+            " than 8 characters but less than 20.")
     @Column(name="password")
     private String password;
 
@@ -36,6 +46,14 @@ public class User {
     // these are custom activities created by the user
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Activities> activities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Roles> roles;
 
     public User() {};
 
@@ -91,6 +109,14 @@ public class User {
 
     public void setActivities(List<Activities> activities) {
         this.activities = activities;
+    }
+
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
     }
 
     @Override
