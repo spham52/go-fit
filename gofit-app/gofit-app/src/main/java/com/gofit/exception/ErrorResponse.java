@@ -1,17 +1,26 @@
 package com.gofit.exception;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class ErrorResponse {
 
     private int status;
-    private String message;
+    private String error;
     private LocalDateTime timestamp;
+    private Map<String, String> fieldErrors;
 
-    public ErrorResponse(int status, String message, LocalDateTime timestamp) {
+    public ErrorResponse(int status, String error, LocalDateTime timestamp) {
         this.status = status;
-        this.message = message;
+        this.error = error;
         this.timestamp = timestamp;
+    }
+
+    public ErrorResponse(int status, String error, LocalDateTime timestamp, Map<String, String> fieldErrors) {
+        this.status = status;
+        this.error = error;
+        this.timestamp = timestamp;
+        this.fieldErrors = fieldErrors;
     }
 
     public int getStatus() {
@@ -22,12 +31,12 @@ public class ErrorResponse {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getError() {
+        return error;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setError(String error) {
+        this.error = error;
     }
 
     public LocalDateTime getTimestamp() {
@@ -36,5 +45,13 @@ public class ErrorResponse {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Map<String, String> getFieldErrors() {
+        return fieldErrors;
+    }
+
+    public void setFieldErrors(Map<String, String> fieldErrors) {
+        this.fieldErrors = fieldErrors;
     }
 }
