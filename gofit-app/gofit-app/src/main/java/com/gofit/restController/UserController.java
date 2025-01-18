@@ -3,6 +3,7 @@ package com.gofit.restController;
 import com.gofit.entity.User;
 import com.gofit.exception.ResourceNotFound;
 import com.gofit.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private UserService userService;
 
@@ -38,15 +39,14 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("/auth/register")
-    String addUser(@ModelAttribute("user") User user) {
+    @PostMapping()
+    User addUser(@Valid @RequestBody User user) {
         user.setId(0);
-        userService.save(user);
-        return "redirect:/login";
+        return userService.save(user);
     }
 
     @PutMapping()
-    User updateUser(@RequestBody User user) {
+    User updateUser(@Valid @RequestBody User user) {
         return userService.update(user);
     }
 
