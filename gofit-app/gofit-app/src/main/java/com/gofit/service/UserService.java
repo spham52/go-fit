@@ -17,4 +17,8 @@ public interface UserService {
     List<User> findAllUsers();
 
     User findByUsername(String username);
+
+    void addRoleToUser(int userID, int roleID);
+
+    void deleteRoleFromUser(int userID, int roleID);
 }
