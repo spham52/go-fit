@@ -29,12 +29,7 @@ public class ActivitiesServiceImpl implements ActivitiesService {
 
     @Override
     public Activities getActivities(int id) {
-        try {
-            return activitiesDAO.get(id);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Activity not found");
-            return null;
-        }
+        return activitiesDAO.get(id);
     }
 
     @Override
