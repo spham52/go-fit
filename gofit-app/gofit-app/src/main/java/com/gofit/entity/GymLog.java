@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 // it is mapped to an activity log
 
 @Entity
-@Table(name = "workout_log")
-public class WorkoutLog {
+@Table(name = "gym_log")
+public class GymLog {
 
     @NotNull
     @Id
@@ -31,10 +31,10 @@ public class WorkoutLog {
     @Column(name = "notes")
     private String notes;
 
-    public WorkoutLog() {
+    public GymLog() {
     }
 
-    public WorkoutLog(ActivityLog activityLog, LocalDateTime time) {
+    public GymLog(ActivityLog activityLog, LocalDateTime time) {
         this.activityLog = activityLog;
         this.time = time;
     }
@@ -81,11 +81,11 @@ public class WorkoutLog {
 
     @Override
     public String toString() {
-        return "WorkoutLog{" +
+        return "GymLog{" +
                 "activityLog=" + activityLog +
                 ", reps=" + reps +
                 ", sets=" + sets +
-                ", time='" + time + '\'' +
+                ", time=" + time +
                 ", notes='" + notes + '\'' +
                 '}';
     }
