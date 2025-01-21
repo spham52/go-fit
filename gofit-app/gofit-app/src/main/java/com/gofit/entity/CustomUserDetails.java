@@ -1,17 +1,18 @@
 package com.gofit.entity;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private User user;
 
-    public CustomUserDetails(User user) {
-        this.user = user;
-    }
+    private final User user;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
