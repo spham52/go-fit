@@ -1,11 +1,10 @@
-import "../auth.css";
 import TextField from "@mui/material/TextField";
-import { BlueButton, StyledLink } from "../styles";
+import { AuthBox, AuthPage, BlueButton, StyledLink } from "../styles";
 
 const Login = () => {
   return (
-    <>
-      <div className="auth-box">
+    <AuthPage>
+      <AuthBox>
         <h1>Log In</h1>
         <form>
           <TextField label="Username" variant="outlined" required fullWidth />
@@ -32,8 +31,8 @@ const Login = () => {
             </span>
           </div>
         </form>
-      </div>
-    </>
+      </AuthBox>
+    </AuthPage>
   );
 };
 
