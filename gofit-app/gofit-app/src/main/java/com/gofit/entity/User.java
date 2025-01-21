@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,20 +48,23 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Activities> activities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Roles> roles;
+    private List<Roles> roles = new ArrayList<>();
 
-    public User() {};
+    public User() {
+        roles.add(new Roles("ROLE_USER"));
+    };
 
     public User(String displayName, String username, String password) {
         this.displayName = displayName;
         this.username = username;
         this.password = password;
+        roles.add(new Roles("ROLE_USER"));
     }
 
     public int getId() {
