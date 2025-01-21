@@ -3,12 +3,14 @@ package com.gofit.service;
 import com.gofit.dao.ActivitiesDAO;
 import com.gofit.entity.Activities;
 import com.gofit.entity.User;
+import com.gofit.exception.ResourceNotFound;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivitiesServiceImpl implements ActivitiesService {
@@ -60,7 +62,8 @@ public class ActivitiesServiceImpl implements ActivitiesService {
     @Override
     @Transactional
     public Activities addToUser(Activities activities, int userID) {
-        User user = userService.findByID(userID);
+        User user = userService.findByID(userID).orElseThrow(() -> new ResourceNotFound("User not found" +
+                " " + userID));
 
         if (user.getActivities() == null) {
             user.setActivities(new ArrayList<>());

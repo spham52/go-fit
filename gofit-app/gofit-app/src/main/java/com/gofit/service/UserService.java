@@ -3,6 +3,7 @@ package com.gofit.service;
 import com.gofit.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -12,11 +13,11 @@ public interface UserService {
 
     void deleteByID(int id);
 
-    User findByID(int id);
+    Optional<User> findByID(int id);
 
     List<User> findAllUsers();
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     void addRoleToUser(int userID, int roleID);
 

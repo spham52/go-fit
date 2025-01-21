@@ -4,6 +4,7 @@ import com.gofit.dao.RolesDAO;
 import com.gofit.entity.Roles;
 import com.gofit.entity.User;
 import com.gofit.dao.UserDAO;
+import com.gofit.exception.ResourceNotFound;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,8 +44,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByID(int id) {
-        return userDAO.findByID(id);
+    public Optional<User> findByID(int id) {
+        User user = userDAO.findByID(id);
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -52,19 +55,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userDAO.findByUsername(username);
+    public Optional<User> findByUsername(String username) {
+        User user = userDAO.findByUsername(username);
+        return Optional.ofNullable(user);
     }
 
     @Override
     @Transactional
     public void addRoleToUser(int userID, int roleID) {
-        User user = userDAO.findByID(userID);
+        User user = findByID(userID).orElseThrow(() -> new ResourceNotFound("User not found with id " + userID));
         List<Roles> roles = user.getRoles();
         if (roles == null) {
             roles = new ArrayList<Roles>();
         }
-        Roles role = rolesService.findById(roleID);
+        Roles role = rolesService.findById(roleID).orElseThrow(()
+                -> new ResourceNotFound("Role not found with id " + roleID));
         roles.add(role);
         user.setRoles(roles);
         userDAO.save(user);
@@ -73,12 +78,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteRoleFromUser(int userID, int roleID) {
-        User user = userDAO.findByID(userID);
+        User user = findByID(userID).orElseThrow(() -> new ResourceNotFound("User not found with id " + userID));
         List<Roles> roles = user.getRoles();
         if (roles == null) {
             return;
         }
-        Roles role = rolesService.findById(roleID);
+        Roles role = rolesService.findById(roleID).orElseThrow(()
+                -> new ResourceNotFound("Role not found with id " + roleID));
         roles.remove(role);
         user.setRoles(roles);
         userDAO.save(user);
