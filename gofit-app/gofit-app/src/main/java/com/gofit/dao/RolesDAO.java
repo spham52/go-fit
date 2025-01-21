@@ -15,4 +15,6 @@ public interface RolesDAO {
     Roles update(Roles roles);
 
     void delete(Roles roles);
+
+    Roles findByName(String name);
 }

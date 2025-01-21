@@ -48,4 +48,11 @@ public class RolesDAOImpl implements RolesDAO {
     public void delete(Roles roles) {
         em.remove(roles);
     }
+
+    @Override
+    public Roles findByName(String name) {
+        TypedQuery<Roles> query = em.createQuery("select r from Roles r where r.name = :name", Roles.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
+    }
 }
