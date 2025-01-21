@@ -28,7 +28,7 @@ public class AuthenticationService {
         var user = new User (
                 request.getDisplayName(),
                 request.getUsername(),
-                passwordEncoder.encode(request.getPassword())
+                request.getPassword()
                 );
         userService.save(user);
 
@@ -42,11 +42,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = userService.findByUsername(request.getEmail())
+        var user = userService.findByUsername(request.getUsername())
                 .orElseThrow();
 
         var userDetails = new CustomUserDetails(user);
