@@ -32,7 +32,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     ResponseEntity<User> getUserById(@PathVariable("id") int id) {
-        User user = userService.findByID(id);
+        User user = userService.findByID(id).orElseThrow(()
+                -> new ResourceNotFound("User with id " + id + " not found"));
         if (user == null) {
             throw new ResourceNotFound("User with id " + id + " not found");
         }
@@ -52,10 +53,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     void deleteUser(@PathVariable("id") int id) {
-        User user = userService.findByID(id);
-        if (user == null) {
-            throw new ResourceNotFound("User with id " + id + " not found");
-        }
-        userService.deleteByID(id);
+        User user = userService.findByID(id).orElseThrow(() -> new
+                ResourceNotFound("User with id " + id + " not found"));
+        userService.deleteByID(user.getId());
     }
 }
