@@ -4,6 +4,7 @@ import com.gofit.configuration.JwtService;
 import com.gofit.entity.Roles;
 import com.gofit.service.RolesService;
 import com.gofit.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.gofit.entity.CustomUserDetails;
 import com.gofit.entity.User;
@@ -46,8 +47,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = userService.findByUsername(request.getUsername())
-                .orElseThrow();
+        var user = userService.findByUsername(request.getUsername());
 
         var userDetails = new CustomUserDetails(user);
 

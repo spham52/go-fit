@@ -1,5 +1,6 @@
 package com.gofit.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,6 +33,21 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
+                LocalDateTime.now(),
+                errors
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> constraintViolation(ConstraintViolationException ex) {
+        HashMap<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach(error -> {
+            errors.put(error.getPropertyPath().toString(), error.getMessage());
+        });
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Constraint violation",
                 LocalDateTime.now(),
                 errors
         );
