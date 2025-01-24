@@ -62,8 +62,7 @@ public class ActivitiesServiceImpl implements ActivitiesService {
     @Override
     @Transactional
     public Activities addToUser(Activities activities, int userID) {
-        User user = userService.findByID(userID).orElseThrow(() -> new ResourceNotFound("User not found" +
-                " " + userID));
+        User user = userService.findByID(userID);
 
         if (user.getActivities() == null) {
             user.setActivities(new ArrayList<>());

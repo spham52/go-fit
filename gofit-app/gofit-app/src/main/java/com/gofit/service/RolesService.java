@@ -9,7 +9,7 @@ public interface RolesService {
 
     List<Roles> findAll();
 
-    Optional<Roles> findById(int id);
+    Roles findById(int id);
 
     Roles save(Roles roles);
 

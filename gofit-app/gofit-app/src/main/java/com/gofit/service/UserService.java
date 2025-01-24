@@ -1,23 +1,24 @@
 package com.gofit.service;
 
 import com.gofit.entity.User;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    User save(User user);
+    User save(@Valid User user);
 
-    User update(User user);
+    User update(@Valid User user);
 
     void deleteByID(int id);
 
-    Optional<User> findByID(int id);
+    User findByID(int id);
 
     List<User> findAllUsers();
 
-    Optional<User> findByUsername(String username);
+    User findByUsername(String username);
 
     void addRoleToUser(int userID, int roleID);
 
