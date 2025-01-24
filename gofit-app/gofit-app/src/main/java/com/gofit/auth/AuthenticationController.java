@@ -1,6 +1,5 @@
-package com.gofit.configuration.auth;
+package com.gofit.auth;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

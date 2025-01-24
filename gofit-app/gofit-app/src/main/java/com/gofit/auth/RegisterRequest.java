@@ -1,4 +1,4 @@
-package com.gofit.configuration.auth;
+package com.gofit.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
