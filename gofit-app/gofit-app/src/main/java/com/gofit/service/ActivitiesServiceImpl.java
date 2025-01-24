@@ -5,6 +5,7 @@ import com.gofit.entity.Activities;
 import com.gofit.entity.User;
 import com.gofit.exception.ResourceNotFound;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,18 +32,25 @@ public class ActivitiesServiceImpl implements ActivitiesService {
 
     @Override
     public Activities getActivities(int id) {
+        if (activitiesDAO.get(id) == null) {
+            throw new ResourceNotFound("Activity not found");
+        }
         return activitiesDAO.get(id);
     }
 
     @Override
     @Transactional
-    public Activities save(Activities activities) {
+    public Activities save(@Valid Activities activities) {
         return activitiesDAO.save(activities);
     }
 
     @Override
     @Transactional
-    public Activities update(Activities activities) {
+    public Activities update(@Valid Activities activities) {
+        Activities findActivity = activitiesDAO.get(activities.getActivity_id());
+        if (findActivity == null) {
+            throw new ResourceNotFound("Activity not found");
+        }
         return activitiesDAO.update(activities);
     }
 
@@ -61,7 +69,7 @@ public class ActivitiesServiceImpl implements ActivitiesService {
 
     @Override
     @Transactional
-    public Activities addToUser(Activities activities, int userID) {
+    public Activities addToUser(@Valid Activities activities, int userID) {
         User user = userService.findByID(userID);
 
         if (user.getActivities() == null) {
