@@ -7,6 +7,9 @@ import axios from "axios";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const navigate = useNavigate();
 
   const login = () => {
@@ -21,6 +24,8 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err);
+        setUsernameError(err.response.data.fieldErrors["username"]);
+        setPasswordError(err.response.data.fieldErrors["password"]);
       });
   };
 
@@ -34,13 +39,15 @@ const Login = () => {
     <AuthPage>
       <AuthBox>
         <h1>Log In</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <TextField
             label="Username"
             variant="outlined"
             required
             fullWidth
             onChange={(e) => setUsername(e.target.value)}
+            error={!!usernameError}
+            helperText={usernameError || ""}
           />
           <TextField
             label="Password"
@@ -50,6 +57,9 @@ const Login = () => {
             required
             fullWidth
             onChange={(e) => setPassword(e.target.value)}
+            error={!!passwordError}
+            helperText={passwordError || ""}
+            autoComplete="off"
           />
           <BlueButton
             type="submit"

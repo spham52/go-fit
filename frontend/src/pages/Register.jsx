@@ -28,7 +28,6 @@ const Register = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(err.response.data.fieldErrors);
         setUsernameError(err.response.data.fieldErrors["save.user.username"]);
         setDisplayNameError(
           err.response.data.fieldErrors["save.user.displayName"]
