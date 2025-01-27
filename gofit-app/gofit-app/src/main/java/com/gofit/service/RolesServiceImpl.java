@@ -4,6 +4,7 @@ import com.gofit.dao.RolesDAO;
 import com.gofit.entity.Roles;
 import com.gofit.exception.ResourceNotFound;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +27,27 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public Optional<Roles> findById(int id) {
+    public Roles findById(int id) {
         Roles role = rolesDAO.findById(id);
-        return Optional.ofNullable(role);
+        if (role == null) {
+            throw new ResourceNotFound("Role not found");
+        }
+        return role;
     }
 
     @Override
     @Transactional
-    public Roles save(Roles roles) {
+    public Roles save(@Valid Roles roles) {
         return rolesDAO.save(roles);
     }
 
     @Override
     @Transactional
-    public Roles update(Roles roles) {
+    public Roles update(@Valid Roles roles) {
+        Roles findRole = rolesDAO.findById(roles.getId());
+        if (findRole == null) {
+            throw new ResourceNotFound("Role not found");
+        }
         return rolesDAO.update(roles);
     }
 
@@ -51,7 +59,7 @@ public class RolesServiceImpl implements RolesService {
     @Override
     @Transactional
     public void delete(int id) {
-        Roles role = findById(id).orElseThrow(() -> new ResourceNotFound("Role not found: " + id ));
+        Roles role = findById(id);
         rolesDAO.delete(role);
     }
 }

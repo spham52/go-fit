@@ -1,6 +1,7 @@
 package com.gofit.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -19,10 +20,12 @@ public class Activities {
     private User user;
 
     @NotNull
+    @NotEmpty(message = "Activity name must not be empty.")
     @Column(name="activity_name")
     private String activityName;
 
     @NotNull
+    @NotEmpty(message = "Activity type must not be empty.")
     @Column(name = "activity_type")
     private String activityType;
 
@@ -30,6 +33,8 @@ public class Activities {
     private String category;
 
     @Column(name = "is_custom")
+    @NotNull
+    @NotEmpty(message = "isCustom must be inputted.")
     private boolean isCustom = false;
 
     public Activities() {}

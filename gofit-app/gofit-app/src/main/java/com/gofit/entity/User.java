@@ -1,12 +1,13 @@
 package com.gofit.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gofit.annotation.UniqueColumn;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -19,24 +20,31 @@ public class User {
     @Column(name="user_id")
     private int id;
 
-    @NotBlank
+    @NotNull
+    @NotBlank(message = "You must enter a displayed username.")
     @Column(name="display_username")
-    @Size(min=6, max=32)
     @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
+    @UniqueColumn(field = "displayName", message = "Display name must be unique.")
     private String displayName;
 
     @NotNull
-    @NotBlank
+    @NotBlank(message = "You must enter a username.")
     @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
+    @UniqueColumn(field = "username", message = "Username must be unique.")
     @Column(name="username")
     private String username;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 8, max=20, message="Please enter a password greater" +
-            " than 8 characters but less than 20.")
     @Column(name="password")
+    @NotBlank
+    @NotNull
     private String password;
+
+    @Transient
+    @JsonProperty("plainPassword")
+    @NotBlank(message = "You must enter a password.")
+    @NotNull
+    @Size(min = 8, max = 20, message = "Please enter a password greater than 8 characters but less than 20.")
+    private String plainPassword;
 
     // list of sessions created by a user
     // each session represents multiple workouts or exercises done in a session
@@ -60,11 +68,19 @@ public class User {
         roles.add(new Roles("ROLE_USER"));
     };
 
-    public User(String displayName, String username, String password) {
+    public User(String displayName, String username, String plainPassword) {
         this.displayName = displayName;
         this.username = username;
-        this.password = password;
+        this.plainPassword = plainPassword;
         roles.add(new Roles("ROLE_USER"));
+    }
+
+    public String getPlainPassword() {
+        return plainPassword;
+    }
+
+    public void setPlainPassword(String plainPassword) {
+        this.plainPassword = plainPassword;
     }
 
     public int getId() {

@@ -1,15 +1,12 @@
-package com.gofit.configuration.auth;
+package com.gofit.auth;
 
 import com.gofit.configuration.JwtService;
-import com.gofit.entity.Roles;
-import com.gofit.service.RolesService;
 import com.gofit.service.UserService;
 import lombok.RequiredArgsConstructor;
 import com.gofit.entity.CustomUserDetails;
 import com.gofit.entity.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +25,7 @@ public class AuthenticationService {
         var user = new User (
                 request.getDisplayName(),
                 request.getUsername(),
-                passwordEncoder.encode(request.getPassword())
+                request.getPassword()
                 );
         userService.save(user);
 
@@ -42,12 +39,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = userService.findByUsername(request.getEmail())
-                .orElseThrow();
+        var user = userService.findByUsername(request.getUsername());
 
         var userDetails = new CustomUserDetails(user);
 
