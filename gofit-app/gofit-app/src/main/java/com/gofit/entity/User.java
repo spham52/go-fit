@@ -35,8 +35,6 @@ public class User {
     private String username;
 
     @Column(name="password")
-    @NotBlank
-    @NotNull
     private String password;
 
     @Transient
