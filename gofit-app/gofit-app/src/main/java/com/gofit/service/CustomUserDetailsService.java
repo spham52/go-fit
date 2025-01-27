@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             user = userService.findByUsername(username);
         } catch (ResourceNotFound r) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("Your login details were incorrect.");
         }
         return new CustomUserDetails(user);
     }
