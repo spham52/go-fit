@@ -10,6 +10,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [usernameError, setUsernameError] = useState("");
+  const [displayNameError, setDisplayNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const navigate = useNavigate();
 
   const register = () => {
@@ -24,7 +28,14 @@ const Register = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data.fieldErrors);
+        setUsernameError(err.response.data.fieldErrors["save.user.username"]);
+        setDisplayNameError(
+          err.response.data.fieldErrors["save.user.displayName"]
+        );
+        setPasswordError(
+          err.response.data.fieldErrors["save.user.plainPassword"]
+        );
       });
   };
 
@@ -43,7 +54,7 @@ const Register = () => {
     <AuthPage>
       <AuthBox>
         <h1>Register</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <TextField
             label="Username"
             variant="outlined"
@@ -51,6 +62,8 @@ const Register = () => {
             required
             fullWidth
             onChange={(e) => setUsername(e.target.value)}
+            error={!!usernameError}
+            helperText={usernameError || ""}
           />
           <TextField
             label="Display Name"
@@ -59,10 +72,11 @@ const Register = () => {
             required
             fullWidth
             onChange={(e) => setDisplayName(e.target.value)}
+            error={!!displayNameError}
+            helperText={displayNameError || ""}
           />
           <TextField
             id="password"
-            error={!passwordMatch}
             label="Password"
             variant="outlined"
             type="password"
@@ -70,10 +84,12 @@ const Register = () => {
             required
             fullWidth
             onChange={(e) => setPassword(e.target.value)}
+            error={!!passwordError}
+            helperText={passwordError || ""}
           />
           <TextField
             id="confirm-password"
-            error={!passwordMatch}
+            error={!passwordMatch || !!passwordError}
             label="Confirm Password"
             variant="outlined"
             type="password"
