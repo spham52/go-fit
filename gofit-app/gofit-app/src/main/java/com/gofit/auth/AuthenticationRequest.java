@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class AuthenticationRequest {
 
     @NotBlank(message = "You must enter a username")
-    @NotNull
     private String username;
 
     @NotBlank(message = "You must enter a password.")

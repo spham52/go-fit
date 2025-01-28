@@ -14,20 +14,17 @@ import java.util.List;
 @Table(name="user")
 public class User {
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private int id;
 
-    @NotNull
     @NotBlank(message = "You must enter a displayed username.")
     @Column(name="display_username")
     @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
     @UniqueColumn(field = "displayName", message = "Display name must be unique.")
     private String displayName;
 
-    @NotNull
     @NotBlank(message = "You must enter a username.")
     @Size(min=6, max=32, message="Enter a username longer than 6 characters but less than 32.")
     @UniqueColumn(field = "username", message = "Username must be unique.")
@@ -40,7 +37,6 @@ public class User {
     @Transient
     @JsonProperty("plainPassword")
     @NotBlank(message = "You must enter a password.")
-    @NotNull
     @Size(min = 8, max = 20, message = "Please enter a password greater than 8 characters but less than 20.")
     private String plainPassword;
 
