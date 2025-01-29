@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public User findByID(int id) {
         User user = userDAO.findByID(id);
         if (user == null) {
-            throw new ResourceNotFound("User Not Found");
+            throw new ResourceNotFound("User not found");
         }
         return user;
     }
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         User user = userDAO.findByUsername(username);
         if (user == null) {
-            throw new ResourceNotFound("User Not Found");
+            throw new ResourceNotFound("User not found");
         }
         return user;
     }
