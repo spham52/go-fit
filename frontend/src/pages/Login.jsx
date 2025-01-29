@@ -9,13 +9,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const login = () => {
     axios
       .post("http://localhost:8080/api/auth/authenticate", {
-        email: username,
+        username,
         password,
       })
       .then((response) => {
@@ -23,9 +24,12 @@ const Login = () => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(err);
-        setUsernameError(err.response.data.fieldErrors["username"]);
-        setPasswordError(err.response.data.fieldErrors["password"]);
+        if (err.response.data.fieldErrors) {
+          setUsernameError(err.response.data.fieldErrors["username"]);
+          setPasswordError(err.response.data.fieldErrors["password"]);
+        } else {
+          setError(err.response.data.error);
+        }
       });
   };
 
@@ -46,7 +50,7 @@ const Login = () => {
             required
             fullWidth
             onChange={(e) => setUsername(e.target.value)}
-            error={!!usernameError}
+            error={!!usernameError || !!error}
             helperText={usernameError || ""}
           />
           <TextField
@@ -57,8 +61,8 @@ const Login = () => {
             required
             fullWidth
             onChange={(e) => setPassword(e.target.value)}
-            error={!!passwordError}
-            helperText={passwordError || ""}
+            error={!!passwordError || !!error}
+            helperText={passwordError || error || ""}
             autoComplete="off"
           />
           <BlueButton
