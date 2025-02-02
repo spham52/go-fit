@@ -20,4 +20,10 @@ public interface ActivitiesDAO {
     List<Activities> getAllFromUser(int userID);
 
     void deleteAllActivitiesFromUser(int userID);
+
+    List<Activities> getAllActivitiesFromUser(int userID);
+
+    List<Activities> getDefaultActivities();
+
+    Activities getActivitiesAndUser(int id);
 }

@@ -3,15 +3,14 @@ package com.gofit.service;
 import com.gofit.dao.ActivitiesDAO;
 import com.gofit.entity.Activities;
 import com.gofit.entity.User;
-import com.gofit.exception.ResourceNotFound;
+import com.gofit.exception.ResourceNotFoundException;
+import com.gofit.exception.UnauthorisedOperationException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ActivitiesServiceImpl implements ActivitiesService {
@@ -26,72 +25,71 @@ public class ActivitiesServiceImpl implements ActivitiesService {
     }
 
     @Override
+    @Transactional
     public List<Activities> getAllActivities() {
         return activitiesDAO.getAll();
     }
 
     @Override
+    @Transactional
     public Activities getActivities(int id) {
-        if (activitiesDAO.get(id) == null) {
-            throw new ResourceNotFound("Activity not found");
+        User user = userService.getCurrentUser();
+        Activities activities = activitiesDAO.get(id);
+
+        if (activities == null) {
+            throw new ResourceNotFoundException("Activities not found");
         }
-        return activitiesDAO.get(id);
+
+        checkPermission(user, activities);
+        return activities;
     }
 
     @Override
     @Transactional
     public Activities save(@Valid Activities activities) {
+        User user = userService.getCurrentUser();
         return activitiesDAO.save(activities);
     }
 
     @Override
     @Transactional
     public Activities update(@Valid Activities activities) {
-        Activities findActivity = activitiesDAO.get(activities.getActivity_id());
-        if (findActivity == null) {
-            throw new ResourceNotFound("Activity not found");
-        }
+        User user = userService.getCurrentUser();
         return activitiesDAO.update(activities);
     }
 
     @Override
     @Transactional
     public void delete(int id) {
-        Activities activities = activitiesDAO.get(id);
-        if (activities.isCustom()) {
-            User user = activities.getUser();
-            user.getActivities().remove(activities);
-            activities.setUser(null);
-        }
-
+        User user = userService.getCurrentUser();
+        Activities activity = activitiesDAO.getActivitiesAndUser(id);
+        checkPermission(user, activity);
         activitiesDAO.delete(id);
     }
 
     @Override
-    @Transactional
-    public Activities addToUser(@Valid Activities activities, int userID) {
-        User user = userService.findByID(userID);
+    public List<Activities> getAllFromUser() {
+        User user = userService.getCurrentUser();
+        List<Activities> list = activitiesDAO.getAllFromUser(user.getId());
+        list.addAll(activitiesDAO.getDefaultActivities());
+        return list;
+    }
 
-        if (user.getActivities() == null) {
-            user.setActivities(new ArrayList<>());
+    private boolean hasRole(User user, String roleName) {
+        return user.getRoles().stream().anyMatch(role -> role.getRoleName().equals(roleName));
+    }
+
+    private boolean isOwner(User user, Activities activity) {
+        if (activity.getUser().getId() != user.getId()) {
+            return false;
         }
-
-        // activity is a custom activity added by the user
-        activities.setCustom(true);
-        user.getActivities().add(activities);
-        activities.setUser(user);
-        return activitiesDAO.save(activities);
+        return true;
     }
 
-    @Override
-    public List<Activities> getAllFromUser(int userID) {
-        return activitiesDAO.getAllFromUser(userID);
+    private boolean checkPermission(User user, Activities activity) {
+        if (!isOwner(user, activity) && !hasRole(user, "ROLE_ADMIN")) {
+            throw new UnauthorisedOperationException("You do not have permission to access this resource");
+        }
+        return true;
     }
-
-    @Override
-    @Transactional
-    public void deleteAllFromUser(int userID) {
-        activitiesDAO.deleteAllActivitiesFromUser(userID);
-    }
-
 }
