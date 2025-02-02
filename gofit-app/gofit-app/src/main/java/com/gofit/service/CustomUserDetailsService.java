@@ -2,7 +2,7 @@ package com.gofit.service;
 
 import com.gofit.entity.CustomUserDetails;
 import com.gofit.entity.User;
-import com.gofit.exception.ResourceNotFound;
+import com.gofit.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user;
         try {
             user = userService.findByUsername(username);
-        } catch (ResourceNotFound r) {
+        } catch (ResourceNotFoundException r) {
             throw new UsernameNotFoundException("Your login details were incorrect.");
         }
         return new CustomUserDetails(user);
