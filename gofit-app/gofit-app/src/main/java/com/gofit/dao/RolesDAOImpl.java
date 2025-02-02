@@ -2,6 +2,7 @@ package com.gofit.dao;
 
 import com.gofit.entity.Roles;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,14 @@ public class RolesDAOImpl implements RolesDAO {
     }
 
     @Override
+    @Transactional
     public Roles findByName(String name) {
-        TypedQuery<Roles> query = em.createQuery("select r from Roles r where r.name = :name", Roles.class);
+        TypedQuery<Roles> query = em.createQuery("select r from Roles r where r.roleName = :name", Roles.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
