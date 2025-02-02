@@ -1,5 +1,6 @@
 package com.gofit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,15 +17,14 @@ public class Activities {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST,
                                                   CascadeType.REFRESH, CascadeType.DETACH})
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
     @NotEmpty(message = "Activity name must not be empty.")
     @Column(name="activity_name")
     private String activityName;
 
-    @NotNull
     @NotEmpty(message = "Activity type must not be empty.")
     @Column(name = "activity_type")
     private String activityType;
@@ -34,7 +34,6 @@ public class Activities {
 
     @Column(name = "is_custom")
     @NotNull
-    @NotEmpty(message = "isCustom must be inputted.")
     private boolean isCustom = false;
 
     public Activities() {}
