@@ -23,4 +23,6 @@ public interface UserService {
     void addRoleToUser(int userID, int roleID);
 
     void deleteRoleFromUser(int userID, int roleID);
+
+    public User getCurrentUser();
 }

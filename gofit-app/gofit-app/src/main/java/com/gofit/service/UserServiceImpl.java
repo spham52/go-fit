@@ -1,14 +1,15 @@
 package com.gofit.service;
 
-import com.gofit.dao.RolesDAO;
+import com.gofit.entity.CustomUserDetails;
 import com.gofit.entity.Roles;
 import com.gofit.entity.User;
 import com.gofit.dao.UserDAO;
-import com.gofit.exception.ResourceNotFound;
-import jakarta.persistence.TypedQuery;
+import com.gofit.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -36,6 +37,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User save(@Valid User user) {
         user.setPassword(passwordEncoder.encode(user.getPlainPassword()));
+        Roles role = rolesService.findByName("ROLE_USER");
+        if (role != null) {
+            user.getRoles().add(role);
+        } else {
+            role = new Roles("ROLE_USER");
+            user.getRoles().add(role);
+        }
         userDAO.save(user);
         return user;
     }
@@ -44,30 +52,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User update(@Valid User user) {
         Optional<User> optionalUser = Optional.ofNullable(userDAO.findByID(user.getId()));
-        optionalUser.orElseThrow(() -> new ResourceNotFound("User Not Found"));
+        optionalUser.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user.setPassword(passwordEncoder.encode(user.getPlainPassword()));
         return userDAO.update(user);
     }
 
     @Override
+    @Transactional
     public User findByID(int id) {
         User user = userDAO.findByID(id);
         if (user == null) {
-            throw new ResourceNotFound("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         return user;
     }
 
     @Override
+    @Transactional
     public List<User> findAllUsers() {
         return userDAO.findAll();
     }
 
     @Override
+    @Transactional
     public User findByUsername(String username) {
         User user = userDAO.findByUsername(username);
         if (user == null) {
-            throw new ResourceNotFound("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         return user;
     }
@@ -102,9 +113,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("User not authenticated");
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails userDetails) {
+            return findByUsername(userDetails.getUsername());
+        } else {
+            throw new IllegalStateException("Unexpected principal: " + principal);
+        }
+    }
+
+    @Override
+    @Transactional
     public void deleteByID(int id) {
         if (userDAO.findByID(id) == null) {
-            throw new ResourceNotFound("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         userDAO.delete(id);
     }

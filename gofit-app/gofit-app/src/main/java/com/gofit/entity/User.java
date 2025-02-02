@@ -59,14 +59,12 @@ public class User {
     private List<Roles> roles = new ArrayList<>();
 
     public User() {
-        roles.add(new Roles("ROLE_USER"));
     };
 
     public User(String displayName, String username, String plainPassword) {
         this.displayName = displayName;
         this.username = username;
         this.plainPassword = plainPassword;
-        roles.add(new Roles("ROLE_USER"));
     }
 
     public String getPlainPassword() {
