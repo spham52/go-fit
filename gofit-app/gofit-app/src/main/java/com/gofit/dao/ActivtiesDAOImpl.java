@@ -3,6 +3,7 @@ package com.gofit.dao;
 import com.gofit.entity.Activities;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -61,5 +62,26 @@ public class ActivtiesDAOImpl implements ActivitiesDAO {
                                                            Activities.class);
         query.setParameter("userID", userID);
         query.executeUpdate();
+    }
+
+    @Override
+    public List<Activities> getAllActivitiesFromUser(int userID) {
+        TypedQuery<Activities> query = em.createQuery("select a from Activities a where a.user.id = : userID",
+                Activities.class);
+        query.setParameter("userID", userID);
+        return query.getResultList();
+    }
+
+    public List<Activities> getDefaultActivities() {
+        TypedQuery<Activities> query = em.createQuery("select a FROM Activities a where a.isCustom = false", Activities.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public Activities getActivitiesAndUser(int id) {
+        TypedQuery<Activities> query = em.createQuery("select a FROM Activities a " +
+                "JOIN FETCH a.user WHERE a.user.id = :userID", Activities.class);
+        query.setParameter("userID", id);
+        return query.getSingleResult();
     }
 }
