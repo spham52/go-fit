@@ -18,6 +18,7 @@ public class ActivityLog {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                                                   CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "activity_id")
     private Activities activities;
 
     public ActivityLog() {}
