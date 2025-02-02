@@ -1,7 +1,7 @@
 package com.gofit.restController;
 
 import com.gofit.entity.User;
-import com.gofit.exception.ResourceNotFound;
+import com.gofit.exception.ResourceNotFoundException;
 import com.gofit.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class UserController {
     ResponseEntity<User> getUserById(@PathVariable("id") int id) {
         User user = userService.findByID(id);
         if (user == null) {
-            throw new ResourceNotFound("User with id " + id + " not found");
+            throw new ResourceNotFoundException("User with id " + id + " not found");
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
