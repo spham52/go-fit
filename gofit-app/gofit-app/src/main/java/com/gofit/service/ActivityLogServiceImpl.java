@@ -24,6 +24,9 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     public ActivityLog get(int id) {
         User user = userService.getCurrentUser();
         ActivityLog activityLog = activityLogDAO.getActivityLogAndUser(id);
+
+
+
         checkPermission(user, activityLog);
         return activityLog;
     }
@@ -71,6 +74,11 @@ public class ActivityLogServiceImpl implements ActivityLogService {
 
         checkPermission(user, activityLog);
         activityLogDAO.delete(id);
+    }
+
+    @Transactional
+    public ActivityLog getActivityLogAndUser(int id) {
+        return activityLogDAO.getActivityLogAndUser(id);
     }
 
     private boolean hasRole(User user, String role) {
