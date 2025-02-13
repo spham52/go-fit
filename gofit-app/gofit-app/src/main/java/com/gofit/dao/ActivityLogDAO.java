@@ -17,6 +17,6 @@ public interface ActivityLogDAO {
 
     void delete(int id);
 
-    public ActivityLog getActivityLogAndUser(int activityLogID);
+    ActivityLog getActivityLogAndUser(int activityLogID);
 
 }

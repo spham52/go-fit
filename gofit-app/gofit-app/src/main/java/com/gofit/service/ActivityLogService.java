@@ -16,4 +16,6 @@ public interface ActivityLogService {
     ActivityLog update(ActivityLog activityLog);
 
     void delete(int id);
+
+    ActivityLog getActivityLogAndUser(int id);
 }
